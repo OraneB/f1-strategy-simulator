@@ -1,0 +1,38 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Thonny configuration files (machine-specific)
+.thonny/
+
+# Tests / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Streamlit (step 6, if you add local secrets/config)
+.streamlit/secrets.toml
+
+# System files
+.DS_Store          # Mac
+Thumbs.db          # Windows
+
+# Editors / IDEs
+.vscode/
+.idea/
+
+# Distribution / build artifacts
+*.egg-info/
+build/
+dist/
+
+# Generated output files (e.g. plots or results saved by example scripts)
+*.png
+*.csv
+output/
