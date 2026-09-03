@@ -63,7 +63,8 @@ def generate_strategies(race_length, compounds, n_stops, min_stint_length = 5, m
     race_length (int): total number of laps in the race.
     compounds (list): available compound names, e.g. ["soft", "medium", "hard"].
     n_stops (int): number of pit stops (number of stints is n_stops + 1).
-    min_stint_length (int): minimum number of laps allowed per stint. Defaults to 5.
+    min_stint_length (int): minimum number of laps allowed per stint. Defaults to 5. It is a modelling choice:
+      it prunes out strategies that would never be worth the pit stop time loss anyway, keeping the search space smaller.
     min_two_compound (bool): if True, only keep strategies using at least two different compounds 
       overall (F1 rule). Defaults to True.
 
@@ -96,7 +97,7 @@ def find_best_strategy(strategies, tire_compounds, pit_stop_loss = 22.0):
   lowest total race time, alongside that time.
 
   Args:
-    strategies (list): list of Strategy objects to compare.
+    strategies (list): list of Strategy objects to compare. The strategies must be valid.
     tire_compounds (dict): mapping from compound name (str) to its Tire instance.
     pit_stop_loss (float): time penalty for a pit stop, in seconds. Defaults to 22.0.
 
