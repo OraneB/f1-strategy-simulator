@@ -89,7 +89,7 @@ def generate_strategies(race_length, compounds, n_stops, min_stint_length = 5, m
   
   return strategies
 
-def find_best_strategy(strategies, tire_compounds, pit_stop_loss = 22.0):
+def find_best_strategy(strategies, tire_compounds, pit_stop_loss = 22.0, fuel_burn_gain_per_lap = 0.05):
   """
   Find the fastest strategy among a list of candidate strategies.
 
@@ -100,6 +100,7 @@ def find_best_strategy(strategies, tire_compounds, pit_stop_loss = 22.0):
     strategies (list): list of Strategy objects to compare. The strategies must be valid.
     tire_compounds (dict): mapping from compound name (str) to its Tire instance.
     pit_stop_loss (float): time penalty for a pit stop, in seconds. Defaults to 22.0.
+    fuel_burn_gain_per_lap (float): gain in fuel efficiency per lap, in seconds. Defaults to 0.05.
 
   Returns:
     tuple: (best_strategy, best_time), where best_strategy is the Strategy object with the lowest 
@@ -107,9 +108,9 @@ def find_best_strategy(strategies, tire_compounds, pit_stop_loss = 22.0):
   """
   assert(strategies != [])
   best_strategy = strategies[0]
-  best_time = simulate_race(strategies[0], tire_compounds, pit_stop_loss)
+  best_time = simulate_race(strategies[0], tire_compounds, pit_stop_loss, fuel_burn_gain_per_lap)
   for strategy in strategies:
-    time = simulate_race(strategy, tire_compounds, pit_stop_loss)
+    time = simulate_race(strategy, tire_compounds, pit_stop_loss, fuel_burn_gain_per_lap)
     if time < best_time:
       best_time = time
       best_strategy = strategy
