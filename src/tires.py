@@ -40,3 +40,9 @@ class Tire:
         return self.base_laptime + self.degradation_rate * tyre_age
       else:
         return self.base_laptime + self.cliff_lap*self.degradation_rate + self.cliff_degradation_rate*(tyre_age - self.cliff_lap)
+
+tire_compounds = {
+  "soft": Tire("soft", 90.0, 0.15, cliff_lap=12, cliff_degradation_rate=0.45),
+  "medium": Tire("medium", 91.0, 0.08, cliff_lap=22, cliff_degradation_rate=0.25),
+  "hard": Tire("hard", 92.0, 0.04, cliff_lap=35, cliff_degradation_rate=0.12),
+}
