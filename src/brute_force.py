@@ -1,5 +1,5 @@
-from .strategy import Stint, Strategy, is_valid_strategy
-from .simulation import simulate_race
+from strategy import Stint, Strategy, is_valid_strategy
+from simulation import simulate_race
 
 def generate_compounds_sequences(n_stints, compounds):
   """

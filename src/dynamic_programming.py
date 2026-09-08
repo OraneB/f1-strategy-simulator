@@ -1,6 +1,6 @@
 import math
-from .strategy import Stint, Strategy, is_valid_strategy
-from .simulation import simulate_race
+from strategy import Stint, Strategy, is_valid_strategy
+from simulation import simulate_race
 from functools import lru_cache
 
 def best_strategy_dynamic_programming(race_length, tire_compounds, min_stint_length = 5, pit_stop_loss = 22.0, fuel_burn_gain_per_lap = 0.05):
