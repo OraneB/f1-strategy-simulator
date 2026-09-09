@@ -6,11 +6,17 @@ class Stint:
   """A single stint: one tire compound driven for a number of laps."""
   compound: str
   laps: int
+  
+  def __repr__(self):
+    return f"{self.compound}({self.laps} laps)"
 
 @dataclass
 class Strategy:
   """A full race strategy: an ordered sequence of stints."""
   stints: List[Stint]
+  
+  def __repr__(self):
+    return " -> ".join(str(stint) for stint in self.stints)
 
 def is_valid_strategy(strategy: Strategy, race_length: int, valid_compounds=None, require_two_compounds=True):
   """

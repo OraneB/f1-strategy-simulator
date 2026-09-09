@@ -1,4 +1,5 @@
 import time
+import math
 from tires import tire_compounds
 from brute_force import generate_strategies, find_best_strategy
 from dynamic_programming import best_strategy_dynamic_programming
@@ -24,18 +25,27 @@ def compare_brute_force_vs_dp(race_length, tire_compounds, max_n_stops=4, min_st
     """
     compounds = list(tire_compounds.keys())
 
-    print(f"{'Method':<25}{'Best time (s)':<16}{'Compute time (s)':<20}{'Strategy'}")
+    print(f"{'Method':<30}{'Best time (s)':<16}{'Compute time (s)':<20}{'Strategy'}")
     print("-" * 110)
-
+    best_time = math.inf
+    best_strategy = None
+    n_pitstops = 0
+    total_time = 0.0
     for n_stops in range(1, max_n_stops + 1):
         start = time.time()
         strategies = generate_strategies(race_length, compounds, n_stops=n_stops, min_stint_length=min_stint_length)
-        best_strategy, best_time = find_best_strategy(
+        brute_force_strategy, brute_force_time = find_best_strategy(
             strategies, tire_compounds, pit_stop_loss=pit_stop_loss,
             fuel_burn_gain_per_lap=fuel_burn_gain_per_lap
         )
         elapsed = time.time() - start
-        print(f"{'Brute force (' + str(n_stops) + ' stops)':<25}{best_time:<16.2f}{elapsed:<20.4f}{best_strategy}")
+        if brute_force_time < best_time:
+            best_time = brute_force_time
+            best_strategy = brute_force_strategy
+            n_pitstops = n_stops
+        total_time += elapsed
+        print(f"{'Brute force (' + str(n_stops) + ' stops)':<30}{brute_force_time:<16.2f}{elapsed:<20.4f}{brute_force_strategy}")
+    print(f"{'Brute force (best result)':<30}{best_time:<16.2f}{total_time:<20.4f}{best_strategy}")
 
     start = time.time()
     dp_strategy, dp_time = best_strategy_dynamic_programming(
@@ -43,7 +53,7 @@ def compare_brute_force_vs_dp(race_length, tire_compounds, max_n_stops=4, min_st
         pit_stop_loss=pit_stop_loss, fuel_burn_gain_per_lap=fuel_burn_gain_per_lap
     )
     elapsed = time.time() - start
-    print(f"{'Dynamic programming':<25}{dp_time:<16.2f}{elapsed:<20.4f}{dp_strategy}")
+    print(f"{'Dynamic programming':<30}{dp_time:<16.2f}{elapsed:<20.4f}{dp_strategy}")
 
     print("\nConsistency check:")
     resimulated_time = simulate_race(
