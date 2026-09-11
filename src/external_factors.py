@@ -15,3 +15,7 @@ class SafetyCar:
     p_end: float
     sc_laptime: float = 110.0
     sc_pit_stop_loss: float = 14.0
+    
+    def __repr__(self):
+        avg_duration = 1 / self.p_end if self.p_end > 0 else float("inf")
+        return f"SafetyCar(p_start={self.p_start:.3f}, p_end={self.p_end:.3f}, avg duration={avg_duration:.1f} laps)"
