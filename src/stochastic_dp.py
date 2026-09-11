@@ -34,13 +34,13 @@ def best_strategy_stochastic_dp(race_length, tire_compounds, safety_car, pit_sto
         if sc_active:
             continue_time, continue_strategy = dynamic_programming(current_lap + 1, compound, tire_age, compounds_used, True)
             end_time, end_strategy = dynamic_programming(current_lap + 1, compound, tire_age, compounds_used, False)
-            expected_time = safety_car.laptime + safety_car.p_end * end_time + (1 - safety_car.p_end) * continue_time - fuel_burn_gain_per_lap * current_lap
+            expected_time = safety_car.sc_laptime + safety_car.p_end * end_time + (1 - safety_car.p_end) * continue_time - fuel_burn_gain_per_lap * current_lap
             best_option = (expected_time, continue_strategy if safety_car.p_end < 1 - safety_car.p_end else end_strategy)
             for new_compound in tire_compounds:
                 new_compounds_used = compounds_used | frozenset({new_compound})
                 continue_time, continue_strategy = dynamic_programming(current_lap + 1, new_compound, 1, new_compounds_used, True)
                 end_time, end_strategy = dynamic_programming(current_lap + 1, new_compound, 1, new_compounds_used, False)
-                expected_time = safety_car.laptime + safety_car.p_end * end_time + (1 - safety_car.p_end) * continue_time + safety_car.sc_pit_stop_loss - fuel_burn_gain_per_lap * current_lap
+                expected_time = safety_car.sc_laptime + safety_car.p_end * end_time + (1 - safety_car.p_end) * continue_time + safety_car.sc_pit_stop_loss - fuel_burn_gain_per_lap * current_lap
                 strategy_with_pit_stop = [Stint(compound=compound, laps=tire_age)] + (continue_strategy if safety_car.p_end < 1 - safety_car.p_end else end_strategy)
                 if expected_time < best_option[0]:
                     best_option = (expected_time, strategy_with_pit_stop)
