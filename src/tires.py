@@ -14,7 +14,7 @@ class Tire:
     Initialize a tire compound.
 
     Args:
-      compound (str): tire type, e.g. "soft", "medium", "hard".
+      compound (str): tire type, e.g. "SOFT", "MEDIUM", "HARD".
       base_laptime (float): lap time on a fresh tire, in seconds.
       degradation_rate (float): time lost per lap of tire wear, in seconds/lap.
       cliff_lap (int): tire age (in laps) at which degradation switches to the steeper cliff rate.
@@ -42,7 +42,7 @@ class Tire:
         return self.base_laptime + self.cliff_lap*self.degradation_rate + self.cliff_degradation_rate*(tyre_age - self.cliff_lap)
 
 tire_compounds = {
-  "soft": Tire("soft", 90.0, 0.15, cliff_lap=12, cliff_degradation_rate=0.45),
-  "medium": Tire("medium", 91.0, 0.08, cliff_lap=22, cliff_degradation_rate=0.25),
-  "hard": Tire("hard", 92.0, 0.04, cliff_lap=35, cliff_degradation_rate=0.12),
+  "SOFT": Tire("SOFT", 90.0, 0.15, cliff_lap=12, cliff_degradation_rate=0.45),
+  "MEDIUM": Tire("MEDIUM", 91.0, 0.08, cliff_lap=22, cliff_degradation_rate=0.25),
+  "HARD": Tire("HARD", 92.0, 0.04, cliff_lap=35, cliff_degradation_rate=0.12),
 }

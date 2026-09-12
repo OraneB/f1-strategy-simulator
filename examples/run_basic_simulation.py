@@ -10,8 +10,8 @@ def main():
     simulate_race works before any search or optimization is involved.
     """
     strategy = Strategy(stints=[
-        Stint(compound="soft", laps=15),
-        Stint(compound="medium", laps=35),
+        Stint(compound="SOFT", laps=15),
+        Stint(compound="MEDIUM", laps=35),
     ])
 
     race_length = sum(stint.laps for stint in strategy.stints)

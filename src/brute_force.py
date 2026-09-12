@@ -12,7 +12,7 @@ def generate_compounds_sequences(n_stints, compounds):
 
   Args:
     n_stints (int): number of stints in the sequence.
-    compounds (list): available compound names, e.g. ["soft", "medium", "hard"].
+    compounds (list): available compound names, e.g. ["SOFT", "MEDIUM", "HARD"].
 
   Returns:
     list: list of sequences, each a list of compound names of length n_stints.
@@ -61,7 +61,7 @@ def generate_strategies(race_length, compounds, n_stops, min_stint_length = 5, m
 
   Args:
     race_length (int): total number of laps in the race.
-    compounds (list): available compound names, e.g. ["soft", "medium", "hard"].
+    compounds (list): available compound names, e.g. ["SOFT", "MEDIUM", "HARD"].
     n_stops (int): number of pit stops (number of stints is n_stops + 1).
     min_stint_length (int): minimum number of laps allowed per stint. Defaults to 5. It is a modelling choice:
       it prunes out strategies that would never be worth the pit stop time loss anyway, keeping the search space smaller.
