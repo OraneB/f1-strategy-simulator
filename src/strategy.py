@@ -50,4 +50,7 @@ def is_valid_strategy(strategy: Strategy, race_length: int, valid_compounds=None
   if total_laps != race_length:
     return False
   
+  if len(compounds_used) < 2 and require_two_compounds:
+    return False
+  
   return True
