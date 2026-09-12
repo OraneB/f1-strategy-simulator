@@ -36,3 +36,6 @@ dist/
 *.png
 *.csv
 output/
+
+#fastf1 cache
+fastf1_cache/
