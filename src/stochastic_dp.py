@@ -68,7 +68,7 @@ def best_strategy_stochastic_dp(race_length, tire_compounds, safety_car, pit_sto
 
         if sc_active:
             expected_time, chosen_strategy = branch_costs(compound, tire_age, compounds_used)
-            expected_time += safety_car.laptime + fuel_term
+            expected_time += safety_car.sc_laptime + fuel_term
         else:
             expected_time, chosen_strategy = branch_costs(compound, tire_age + 1, compounds_used)
             expected_time += tire_compounds[compound].laptime_on_lap(tire_age) + fuel_term
@@ -78,7 +78,7 @@ def best_strategy_stochastic_dp(race_length, tire_compounds, safety_car, pit_sto
             pit_expected_time, pit_chosen_strategy = branch_costs(new_compound, 1, new_compounds_used)
 
             if sc_active:
-                pit_expected_time += safety_car.laptime + safety_car.sc_pit_stop_loss + fuel_term
+                pit_expected_time += safety_car.sc_laptime + safety_car.sc_pit_stop_loss + fuel_term
             else:
                 pit_expected_time += tire_compounds[new_compound].laptime_on_lap(0) + pit_stop_loss + fuel_term
 
