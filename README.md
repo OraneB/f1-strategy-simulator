@@ -10,6 +10,8 @@ This project investigates how pit stop strategy affects total race time in Formu
 
 A simplified race is represented as a sequence of laps driven on a chosen tire compound, with each compound defined by a base lap time and a degradation profile. Different pit stop strategies are compared according to total race time, and increasingly capable search algorithms are used to find the fastest one as the space of possible strategies grows.
 
+The project progresses from exhaustive search to dynamic programming, and finally to stochastic dynamic programming. In the stochastic model, safety car periods are represented as a two-state Markov process, introducing uncertainty into the optimisation problem and requiring decisions to be evaluated in terms of expected remaining race time.
+
 ## Objective
 
 The objective is to determine, for a given race length and tire model, the pit stop strategy that minimises total race time, and to study how this optimum shifts as degradation becomes non-linear and fuel load and external factors are taken into account.
@@ -90,6 +92,14 @@ PYTHONPATH=src python3 examples/compare_sc_scenarios.py
 
 `compare_sc_scenarios.py` prints, for a given race length, the expected race time and resulting strategy under several safety car risk levels, compared against the no-risk baseline.
 
+## Testing
+ 
+The project includes a unit test suite (`tests/`), covering the tire model, strategy validation, race simulation, and both search approaches — including a consistency check between exhaustive search and dynamic programming, and between the stochastic and deterministic dynamic programming approaches under zero safety car risk.
+ 
+This last check caught a genuine bug during development: the stochastic model computes an expected time by weighting each possible outcome (safety car starts/ends, or not) by its probability, some of which are legitimately zero (e.g. a safety car risk of exactly 0). A branch with zero probability that also happened to be mathematically infinite (an unreachable, invalid strategy) produced `0 * inf = nan` under standard floating-point arithmetic, silently propagating through the recursion. The fix was to skip computing a branch's contribution entirely whenever its probability is zero, rather than relying on multiplying by zero to cancel it out.
+
+The tests were also used to detect and correct several implementation errors and oversights.
+
 ## Results
  
 On a 50-lap race with three compounds, both exhaustive search and dynamic programming converge to the same optimal race time (4551.13s), achieved with two pit stops. Exhaustive search requires querying every valid combination of compounds and stint lengths for each candidate number of stops (up to four) for a total of 29s of computation, while the dynamic programming approach finds the same optimum in approximately 0.03 seconds by avoiding redundant recomputation of shared race states.
@@ -107,9 +117,12 @@ Under increasing safety car risk, the expected race time rises accordingly (e.g.
 
 These limitations provide potential directions for improving the model.
  
-## Technologies
+## Technologies & Methods
  
 - Python
+- Dynamic Programming
+- Stochastic Optimisation
+- Markov Processes
 
 ## Repository Structure
  
@@ -127,5 +140,12 @@ These limitations provide potential directions for improving the model.
 |   ├── run_basic_simulation.py
 |   ├── compare_strategies.py
 |   ├── compare_sc_scenarios.py
+├── tests/
+|   ├── test_tires.py
+|   ├── test_strategy.py
+|   ├── test_simulation.py
+|   ├── test_brute_force.py
+|   ├── test_dynamic_programming.py
+|   ├── test_stochastic_dp.py
 └── README.md
 ```
