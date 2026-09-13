@@ -33,14 +33,17 @@ from scipy.optimize import lsq_linear
 import fastf1
 
 fastf1.set_log_level("ERROR")
+
+import logging
+logging.disable(logging.WARNING)
+
 fastf1.Cache.enable_cache("fastf1_cache")
 
-# Same circuit groups and editions as calibrate_safety_car.py, so that the tire and safety car profiles for a given 
-# circuit are calibrated on the same underlying races. Chosen to span a spread of safety car risk: Monza (low), 
-# Canada (moderate — tight chicanes, "Wall of Champions"), Singapore (high — historically the highest safety car rate 
-# on the calendar). Baku and Monaco were both considered but dropped: Baku's own  measured base_laptime ordering came out 
-# physically inconsistent (MEDIUM faster than SOFT), and having both Monaco and Singapore would have given two similarly 
-# "high risk" profiles rather than a useful spread.
+# Groups of circuits to span a spread of safety car risk: Monza (low), Canada (moderate — tight chicanes, "Wall of 
+# Champions"), Singapore (high — historically the highest safety car rate on the calendar). Baku and Monaco were 
+# both considered but dropped: Baku's own  measured base_laptime ordering came out physically inconsistent (MEDIUM 
+# faster than SOFT), and having both Monaco and Singapore would have given two similarly "high risk" profiles rather 
+# than a useful spread.
 
 CIRCUIT_GROUPS = {
     "Canada": [
@@ -141,15 +144,6 @@ def fill_unreliable_degradation_rates(tire_params, reliable):
     compound at the same circuit (nearest in the soft/medium/hard
     ordering), using ASSUMED_RELATIVE_DEGRADATION. Falls back to
     ABSOLUTE_FALLBACK_DEGRADATION_RATE only if no compound is reliable.
-
-    Using only the nearest reliable compound, rather than averaging
-    across all reliable ones, avoids compounding two separate sources of
-    unreliability: if the reliable compounds themselves don't respect the
-    expected relative ordering (see check_monotonic_degradation_order),
-    averaging across them would silently blend that inconsistency into
-    the interpolated value instead of minimising its influence.
-
-    Mutates tire_params in place and returns it.
     """
     reliable_compounds = [c for c in COMPOUNDS if reliable[c]]
 
