@@ -10,26 +10,14 @@ track status code '4' = Safety Car), then consecutive laps are used to count Mar
 
 import fastf1
 
-fastf1.set_log_level("ERROR")
-fastf1.Cache.enable_cache("fastf1_cache")
+from calibrate_tires import CIRCUIT_GROUPS
 
-# A handful of past editions per circuit, chosen to give enough laps to estimate stable transition probabilities. 
-# Same circuit groups and editions as calibrate_safety_car.py, so that the tire and safety car profiles for a given 
-# circuit are calibrated on the same underlying races.
-CIRCUIT_GROUPS = {
-    "Canada (permanent circuit, moderate SC risk)": [
-        (2018, "Canada"), (2019, "Canada"),
-        (2022, "Canada"), (2023, "Canada"), (2024, "Canada"),
-    ],
-    "Singapore (street circuit, historically highest SC rate)": [
-        (2018, "Singapore"), (2019, "Singapore"),
-        (2022, "Singapore"), (2023, "Singapore"), (2024, "Singapore"),
-    ],
-    "Monza (permanent circuit, low SC risk)": [
-        (2018, "Italy"), (2019, "Italy"), (2021, "Italy"),
-        (2022, "Italy"), (2023, "Italy"), (2024, "Italy"),
-    ],
-}
+fastf1.set_log_level("ERROR")
+
+import logging
+logging.disable(logging.WARNING)
+
+fastf1.Cache.enable_cache("fastf1_cache")
 
 
 def get_safety_car_laps(year, event_name):
