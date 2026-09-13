@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+SC_PIT_LOSS_FACTOR = 0.5
+
 @dataclass
 class SafetyCar:
     """
