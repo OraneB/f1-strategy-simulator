@@ -10,7 +10,7 @@ import os
 from calibrate_tires import calibrate_circuit as calibrate_tires_circuit, COMPOUNDS, CIRCUIT_GROUPS
 from calibrate_sc import calibrate_circuit_group
 from calibrate_pit_stop import calibrate_circuit as calibrate_pit_stop_circuit
-from external_factors import SC_PIT_LOSS_FACTOR
+from external_factors import SC_PIT_LOSS_FACTOR, SC_LAP_TIME_FACTOR
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_PATH = os.path.join(SCRIPT_DIR, "..", "src", "circuit_profiles.py")
@@ -52,6 +52,7 @@ def format_circuit_block(circuit_name, tire_params, fuel_burn_gain_per_lap, race
     lines = [f'    "{circuit_name}": {{']
     lines.append(f'        "race_length": {race_length},')
     lines.append('        "tire_compounds": {')
+    mean_laptime = sum(params["base_laptime"] for params in tire_params.values()) / len(tire_params)
     for compound in COMPOUNDS:
         params = tire_params[compound]
         lines.append(
@@ -61,7 +62,8 @@ def format_circuit_block(circuit_name, tire_params, fuel_burn_gain_per_lap, race
     lines.append('        },')
     lines.append(f'        "fuel_burn_gain_per_lap": {fuel_burn_gain_per_lap:.4f},')
     lines.append(f'        "pit_stop_loss": {pit_stop_loss:.2f},')
-    lines.append(f'        "safety_car": SafetyCar(p_start={p_start:.4f}, p_end={p_end:.4f}, sc_pit_stop_loss={pit_stop_loss * SC_PIT_LOSS_FACTOR:.2f}),')
+    lines.append(f'        "safety_car": SafetyCar(p_start={p_start:.4f}, p_end={p_end:.4f}, '
+                 f'sc_laptime={mean_laptime * SC_LAP_TIME_FACTOR:.2f}, sc_pit_stop_loss={pit_stop_loss * SC_PIT_LOSS_FACTOR:.2f}),')
     lines.append('    },')
     return "\n".join(lines)
 
