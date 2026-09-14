@@ -1,0 +1,12 @@
+# Core simulator (src/, and examples/run_basic_simulation.py, compare_algorithms.py, compare_sc_scenarios.py, 
+# run_circuits.py):
+# no external dependencies — everything uses only the Python standard library (math, functools, dataclasses).
+
+# Calibration scripts (examples/calibrate_tires.py, calibrate_sc.py, calibrate_pit_stop.py, generate_circuit_profiles.py) 
+# Only needed if you want to refresh src/circuit_profiles.py from live FastF1 data:
+fastf1>=3.0
+numpy>=1.24
+scipy>=1.10
+
+# Testing:
+pytest>=7.0
